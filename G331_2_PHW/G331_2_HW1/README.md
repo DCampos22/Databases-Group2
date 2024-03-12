@@ -1,4 +1,4 @@
-# Hello this is Group 2
+# Hello this is Group 2 👋
 ### Below is our NACE presentation, to-do lists, and our group video for PHW1 for Chapter 2
 
 - <a href="https://docs.google.com/presentation/d/1XWAzvdzCZxedVNWI9zSV28B8ptibJUSe/edit#slide=id.p1" rel="noopener noreferrer" target="_blank">Link to Google Presentation</a>
