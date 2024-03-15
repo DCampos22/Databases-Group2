@@ -1,15 +1,18 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 public class DatabaseViewer extends JFrame {
-    private JTextArea resultArea;
+    private DefaultTableModel tableModel;
+    private JTable resultTable;
 
     public DatabaseViewer() {
         super("Database Viewer");
-        resultArea = new JTextArea(10, 50);
-        resultArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(resultArea);
 
+        // Create table model and table
+        tableModel = new DefaultTableModel();
+        resultTable = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(resultTable);
         add(scrollPane);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,19 +40,23 @@ public class DatabaseViewer extends JFrame {
 
             // Use the connection to execute SQL queries
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT TOP 5 * FROM HumanResources.Employee");
+            ResultSet resultSet = statement.executeQuery("SELECT TOP (5) EmployeeId, EmployeeLastName, EmployeeFirstName FROM HumanResources.Employee");
 
-            // Display results in the GUI
-            StringBuilder resultText = new StringBuilder();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("EmployeeId");
-                String firstname = resultSet.getString("EmployeeFirstName");
-                String lastname = resultSet.getString("EmployeeLastName");
-                resultText.append("ID: ").append(id).append(", First name: ").append(firstname)
-                        .append(", Last name: ").append(lastname).append("\n");
+            // Populate table model with column names
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            for (int i = 1; i <= columnCount; i++) {
+                tableModel.addColumn(metaData.getColumnName(i));
             }
 
-            resultArea.setText(resultText.toString());
+            // Populate table model with data
+            while (resultSet.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = resultSet.getObject(i);
+                }
+                tableModel.addRow(rowData);
+            }
 
             // Close the result set, statement, and connection
             resultSet.close();
