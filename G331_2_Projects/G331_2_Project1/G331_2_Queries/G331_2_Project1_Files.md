@@ -1,5 +1,5 @@
 # These is our files for Project 1
-### Below is our NACE presentation, to-do lists, and our group video for PHW1 for Chapter 2
+### Below is our presentation, to-do lists, project planner, JDBC execution video and our group video for Project 1
 
 - <a href="https://cuny-my.sharepoint.com/:p:/g/personal/damaris_campos29_qmail_cuny_edu/EV5TCDWcAe9BnGnIZKebOaUBUQFeWSxsVwVzeSZr5To_3w?rtime=hSBDIZ1J3Eg" rel="noopener noreferrer" target="_blank">Link to Project 1 Presenation</a>
 - <a href="https://cuny-my.sharepoint.com/:x:/g/personal/damaris_campos29_qmail_cuny_edu/EXHqkmVSItZNi0u4XTjeAHwBAbN5VcyNZQzKigAUpncBKA?e=upzukR" rel="noopener noreferrer" target="_blank">Link to To-Do List for Homework 1</a>
