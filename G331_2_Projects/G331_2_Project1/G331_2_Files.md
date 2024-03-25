@@ -5,5 +5,5 @@
 - <a href="https://cuny-my.sharepoint.com/:x:/g/personal/damaris_campos29_qmail_cuny_edu/EXHqkmVSItZNi0u4XTjeAHwBAbN5VcyNZQzKigAUpncBKA?e=upzukR" rel="noopener noreferrer" target="_blank">Link to To-Do List for Project 1</a>
 - <a href="https://cuny-my.sharepoint.com/:x:/g/personal/damaris_campos29_qmail_cuny_edu/EZxnnM4_HZZPppRQPMUAq7YBG4ieMZnHKJzRms4dIfygvw?e=gkAciG" rel="noopener noreferrer" target="_blank">Link to Gantt Project 1</a>
 - <a href="https://drive.google.com/file/d/1aYhW_dSuxHvWaB7WNp8l7quXTiOxiclB/view?usp=sharing" rel="noopener noreferrer" target="_blank">Link to Group Video of JDBC Execution</a>
-- <a href="https://drive.google.com/file/d/1kp-qurzKePBkfDA6zdklwJYlqE3wJkhV/view?usp=sharing" target="_blank">Link to Group Video of Project 1 Presentation</a>
+- <a href="https://drive.google.com/file/d/1qZOljwLYUbwW3L1p_I7Lm39pIT5rRUp_/view?usp=drive_link" target="_blank">Link to Group Video of Project 1 Presentation</a>
 
