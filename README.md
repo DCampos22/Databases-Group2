@@ -3,9 +3,6 @@
 **SYLLABUS:**  
 **CSCI331 DATABASE AND DATA MODELING**
 
-1. Online classes will have their mid-term during free hour on a Monday or Wednesday.
-2. Online classes will have their final during free hour on a Monday or Wednesday.
-
 ### Course Topics from the Books
 **WEEK#** | **ASSIGNMENTS DUE**
 ---------|---------------------
