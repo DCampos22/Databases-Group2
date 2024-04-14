@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Rahib
+-- Author:		Esteban
 -- Create date: 4/13/24
 -- Description:	Populating the Customer Table
 -- =============================================

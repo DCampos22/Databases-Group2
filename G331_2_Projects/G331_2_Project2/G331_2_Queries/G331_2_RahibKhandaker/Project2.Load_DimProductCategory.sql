@@ -3,16 +3,17 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Damaris
+-- Author:		Rahib
 -- Create date: 4/13/24
--- Description:	Populating ProductSubCategory Table
+-- Description:	Populating Product Category Table
 -- =============================================
-ALTER PROCEDURE [Project2].[Load_DimProductSubcategory] @UserAuthorizationKey INT
+ALTER PROCEDURE [Project2].[Load_DimProductCategory] @UserAuthorizationKey INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-
+	
+	set @UserAuthorizationKey = 2;
     DECLARE @DateAdded DATETIME2;
     SET @DateAdded = SYSDATETIME();
 
@@ -22,32 +23,28 @@ BEGIN
     DECLARE @StartingDateTime DATETIME2;
     SET @StartingDateTime = SYSDATETIME();
 
-    INSERT INTO [CH01-01-Dimension].[DimProductSubCategory]
+    INSERT INTO [CH01-01-Dimension].[DimProductCategory]
     (
-        ProductCategoryKey,
-        ProductSubcategory,
+        ProductCategory,
         UserAuthorizationKey,
         DateAdded,
         DateOfLastUpdate
     )
     SELECT DISTINCT
-           DPC.ProductCategoryKey,
-           OLD.ProductSubcategory,
+           FileUpload.OriginallyLoadedData.[ProductCategory],
            @UserAuthorizationKey,
            @DateAdded,
            @DateOfLastUpdate
-    FROM FileUpload.OriginallyLoadedData AS OLD
-        FULL JOIN [CH01-01-Dimension].[DimProductCategory] AS DPC
-            ON OLD.[ProductCategory] = DPC.[ProductCategory];
+    FROM FileUpload.OriginallyLoadedData;
 
     ---VIEW for NEW Table---
     EXEC ('
-    DROP VIEW IF EXISTS G7_2.uvw_DimProductSubCategory');
+	DROP VIEW IF EXISTS G7_2.uvw_DimProductCategory');
     EXEC ('
-    CREATE VIEW G7_2.uvw_DimProductSubCategory AS
-    SELECT ProductSubCategoryKey, ProductCategoryKey, ProductSubcategory, UserAuthorizationKey, DateAdded, DateOfLastUpdate
-    FROM [CH01-01-Dimension].[DimProductSubCategory] ');
-    ---VIEW for NEW Table--
+	CREATE VIEW G7_2.uvw_DimProductCategory AS
+	SELECT ProductCategoryKey, ProductCategory, UserAuthorizationKey, DateAdded, DateOfLastUpdate
+	FROM [CH01-01-Dimension].[DimProductCategory] ');
+    --====================
 
     DECLARE @EndingDateTime DATETIME2;
     SET @EndingDateTime = SYSDATETIME();
@@ -55,16 +52,19 @@ BEGIN
     DECLARE @WorkFlowStepTableRowCount INT;
     SET @WorkFlowStepTableRowCount =
     (
-        SELECT COUNT(*) FROM [CH01-01-Dimension].DimProductSubCategory
+        SELECT COUNT(*) FROM [CH01-01-Dimension].DimProductCategory
     );
 
-    EXEC [Process].[usp_TrackWorkFlow] 'Procedure: [Project2].[Load_DimProductSubCategory]  loads data into [CH01-01-Dimension].[DimProductSubCategory]',
+    EXEC [Process].[usp_TrackWorkFlow] 'Procedure: [Project2].[Load_DimProductCategory] loads data into [CH01-01-Dimension].[DimProductCategory]',
                                        @WorkFlowStepTableRowCount,
                                        @StartingDateTime,
                                        @EndingDateTime,
                                        @UserAuthorizationKey;
 
     SELECT *
-    FROM G7_2.uvw_DimProductSubCategory;
-END;
+    FROM G7_2.uvw_DimProductCategory;
+
+
+
+END
 GO
