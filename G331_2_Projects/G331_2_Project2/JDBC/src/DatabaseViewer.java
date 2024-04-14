@@ -10,9 +10,9 @@ public class DatabaseViewer extends JFrame {
     private JTable resultTable;
     private JButton executeButton;
     private JButton connectButton; // New Connect button
-    private JTextArea queryField; // Change to JTextArea
-    private JTextField usernameField; // New username field --> sa
-    private JPasswordField passwordField; // New password field --> PH@123456789
+    private JTextField queryField;
+    private JTextField usernameField; // New username field
+    private JPasswordField passwordField; // New password field
     private JComboBox<String> databaseComboBox;
     private final String[] DATABASES = {"AdventureWorks2017", "AdventureWorksDW2017", "BIClass", "WideWorldImporters", "WideWorldImportersDW", "Northwinds2022TSQLV7"};
 
@@ -26,7 +26,8 @@ public class DatabaseViewer extends JFrame {
         add(scrollPane);
 
         // Create query field, execute button, and database selection combo box
-        queryField = new JTextArea(5, 50); // Change to JTextArea
+        queryField = new JTextField(50);
+        queryField.setPreferredSize(new Dimension(queryField.getPreferredSize().width, 100)); // Set preferred height to 100 pixels
         executeButton = new JButton("Execute");
         connectButton = new JButton("Connect"); // New Connect button
         usernameField = new JTextField(20); // New username field
@@ -40,11 +41,9 @@ public class DatabaseViewer extends JFrame {
         queryPanel.add(new JLabel("Database:"));
         queryPanel.add(databaseComboBox);
         queryPanel.add(new JLabel("Enter SQL Query:"));
-        queryPanel.add(new JScrollPane(queryField)); // Wrap JTextArea in JScrollPane
+        queryPanel.add(queryField);
         queryPanel.add(executeButton);
         queryPanel.add(connectButton); // New Connect button
-        queryPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding to the panel
-
         add(queryPanel, BorderLayout.SOUTH);
 
         // Execute button action listener
@@ -82,24 +81,33 @@ public class DatabaseViewer extends JFrame {
         }
     }
 
-     private void executeQuery(String databaseName, String sqlQuery, String username, String password) {
-        tableModel.setRowCount(0);
+    private void executeQuery(String databaseName, String sqlQuery, String username, String password) {
+        tableModel.setRowCount(0); // Clear existing table data
         tableModel.setColumnCount(0);
-
+    
+        // JDBC URL for SQL Server
         String url = "jdbc:sqlserver://localhost:13001;databaseName=" + databaseName + ";encrypt=false;";
-
+    
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             Statement statement = connection.createStatement()) {
-
-            // Split SQL queries by semicolon
-            String[] queries = sqlQuery.split(";");
-
-            for (String query : queries) {
-                if (!query.trim().isEmpty()) {
-                    statement.execute(query);
-                }
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
+    
+            // Populate table model with column names
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            for (int i = 1; i <= columnCount; i++) {
+                tableModel.addColumn(metaData.getColumnName(i));
             }
-
+    
+            // Populate table model with data
+            while (resultSet.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = resultSet.getObject(i);
+                }
+                tableModel.addRow(rowData);
+            }
+    
         } catch (SQLException e) {
             e.printStackTrace();
         }
