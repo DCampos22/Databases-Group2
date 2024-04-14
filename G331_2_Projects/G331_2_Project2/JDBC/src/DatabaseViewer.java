@@ -1,105 +1,108 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*; // Import BorderLayout
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class DatabaseViewer extends JFrame {
-    private DefaultTableModel tableModel;
-    private JTable resultTable;
-    private JButton executeButton;
-    private JButton connectButton; // New Connect button
-    private JTextField queryField;
-    private JTextField usernameField; // New username field
-    private JPasswordField passwordField; // New password field
     private JComboBox<String> databaseComboBox;
-    private final String[] DATABASES = {"AdventureWorks2017", "AdventureWorksDW2017", "BIClass", "WideWorldImporters", "WideWorldImportersDW", "Northwinds2022TSQLV7"};
+    private JTextField queryField;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton connectButton;
+    private JButton executeButton;
+    private JPanel resultPanel;
+    private final String[] DATABASES = {"BIClass", "AdventureWorks2017", "AdventureWorksDW2017", "WideWorldImporters", "WideWorldImportersDW", "Northwinds2022TSQLV7"};
 
     public DatabaseViewer() {
         super("Database Viewer");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(850, 800)); // Adjust the preferred height here
 
-        // Create table model and table
-        tableModel = new DefaultTableModel();
-        resultTable = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(resultTable);
-        add(scrollPane);
-
-        // Create query field, execute button, and database selection combo box
-        queryField = new JTextField(50);
-        queryField.setPreferredSize(new Dimension(queryField.getPreferredSize().width, 100)); // Set preferred height to 100 pixels
-        executeButton = new JButton("Execute");
-        connectButton = new JButton("Connect"); // New Connect button
-        usernameField = new JTextField(20); // New username field
-        passwordField = new JPasswordField(20); // New password field
         databaseComboBox = new JComboBox<>(DATABASES);
+        usernameField = new JTextField(20);
+        passwordField = new JPasswordField(20);
+        queryField = new JTextField(50);
+        queryField.setPreferredSize(new Dimension(queryField.getPreferredSize().width, 200));
+        executeButton = new JButton("Execute");
+        connectButton = new JButton("Connect");
+        resultPanel = new JPanel(new GridLayout(0, 1));
+
         JPanel queryPanel = new JPanel();
-        queryPanel.add(new JLabel("Username:")); // New label for username
-        queryPanel.add(usernameField); // New username field
-        queryPanel.add(new JLabel("Password:")); // New label for password
-        queryPanel.add(passwordField); // New password field
+        queryPanel.setPreferredSize(new Dimension(800, 200)); // Adjust the height here
+        queryPanel.add(new JLabel("Username:"));
+        queryPanel.add(usernameField);
+        queryPanel.add(new JLabel("Password:"));
+        queryPanel.add(passwordField);
         queryPanel.add(new JLabel("Database:"));
         queryPanel.add(databaseComboBox);
         queryPanel.add(new JLabel("Enter SQL Query:"));
         queryPanel.add(queryField);
         queryPanel.add(executeButton);
-        queryPanel.add(connectButton); // New Connect button
-        add(queryPanel, BorderLayout.SOUTH);
+        queryPanel.add(connectButton);
 
-        // Execute button action listener
-        executeButton.addActionListener(e -> {
-            String selectedDatabase = (String) databaseComboBox.getSelectedItem();
-            String sqlQuery = queryField.getText().trim();
-            String username = usernameField.getText(); // Get username from username field
-            String password = new String(passwordField.getPassword()); // Get password from password field
-            executeQuery(selectedDatabase, sqlQuery, username, password);
-        });
+        JScrollPane scrollPane = new JScrollPane(resultPanel);
+        add(queryPanel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Connect button action listener
-        connectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedDatabase = (String) databaseComboBox.getSelectedItem();
-                String username = usernameField.getText(); // Get username from username field
-                String password = new String(passwordField.getPassword()); // Get password from password field
-                connectToDatabase(selectedDatabase, username, password);
-            }
-        });
+        connectButton.addActionListener(e -> connectToDatabase());
+        executeButton.addActionListener(e -> executeQuery());
 
-        setPreferredSize(new Dimension(850,600));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         pack();
-        setLocationRelativeTo(null); // Center the frame
+        setLocationRelativeTo(null);
         setVisible(true);
+    }
 
-        // Load the JDBC driver
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        } catch (ClassNotFoundException e) {
+
+    private void connectToDatabase() {
+        String databaseName = (String) databaseComboBox.getSelectedItem();
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String url = "jdbc:sqlserver://localhost:13001;databaseName=" + databaseName + ";encrypt=false;";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            JOptionPane.showMessageDialog(this, "Connected to database successfully!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Failed to connect to database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-            return;
         }
     }
 
-    private void executeQuery(String databaseName, String sqlQuery, String username, String password) {
-        tableModel.setRowCount(0); // Clear existing table data
-        tableModel.setColumnCount(0);
-    
-        // JDBC URL for SQL Server
+    private void executeQuery() {
+        String databaseName = (String) databaseComboBox.getSelectedItem();
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String sqlQuery = queryField.getText().trim();
         String url = "jdbc:sqlserver://localhost:13001;databaseName=" + databaseName + ";encrypt=false;";
-    
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
-    
-            // Populate table model with column names
+             Statement statement = connection.createStatement()) {
+            boolean hasResults = statement.execute(sqlQuery);
+            int resultSetCount = 0;
+            do {
+                if (hasResults) {
+                    ResultSet resultSet = statement.getResultSet();
+                    displayResultSet(resultSet);
+                    resultSetCount++;
+                }
+                hasResults = statement.getMoreResults();
+            } while (hasResults || statement.getUpdateCount() != -1);
+            if (resultSetCount == 0) {
+                JOptionPane.showMessageDialog(this, "The query did not return any result set.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "SQL Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void displayResultSet(ResultSet resultSet) throws SQLException {
+        if (resultSet != null) {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
+            DefaultTableModel tableModel = new DefaultTableModel();
             for (int i = 1; i <= columnCount; i++) {
                 tableModel.addColumn(metaData.getColumnName(i));
             }
-    
-            // Populate table model with data
             while (resultSet.next()) {
                 Object[] rowData = new Object[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
@@ -107,23 +110,10 @@ public class DatabaseViewer extends JFrame {
                 }
                 tableModel.addRow(rowData);
             }
-    
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-
-
-    private void connectToDatabase(String databaseName, String username, String password) {
-        // JDBC URL for SQL Server
-        String url = "jdbc:sqlserver://localhost:13001;databaseName=" + databaseName + ";encrypt=false;";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            JOptionPane.showMessageDialog(this, "Connected to database successfully!");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Failed to connect to database: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            JTable resultTable = new JTable(tableModel);
+            resultPanel.add(new JScrollPane(resultTable));
+            resultPanel.revalidate();
+            resultPanel.repaint();
         }
     }
 
