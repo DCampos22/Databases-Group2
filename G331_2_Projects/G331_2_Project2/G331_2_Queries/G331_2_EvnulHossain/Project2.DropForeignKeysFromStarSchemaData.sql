@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Damaris
+-- Author:		Evnul
 -- Create date: 4/13/24
 -- Description:	Drop the Foreign Keys From the Star Schema
 -- =============================================

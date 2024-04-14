@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Evnul
+-- Author:		Damaris
 -- Create date: 4/13/24
 -- Description:	
 -- =============================================
@@ -11,13 +11,13 @@ ALTER PROCEDURE [Project2].[LoadStarSchemaData]
 AS
 BEGIN
     SET NOCOUNT ON;
-		declare @UserAuthorizationKey int = 6;
+		declare @UserAuthorizationKey int = 3;
 	    DECLARE @StartingDateTime DATETIME2 = SYSDATETIME();
 
     --
     --	Drop All of the foreign keys prior to truncating tables in the star schema
  	--
-    EXEC  [Project2].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 3;
+    EXEC  [Project2].[DropForeignKeysFromStarSchemaData] @UserAuthorizationKey = 6;
 	--
 	--	Check row count before truncation
 	EXEC	[Project2].[ShowTableStatusRowCount]
@@ -50,7 +50,7 @@ BEGIN
 		@UserAuthorizationKey = 6,  -- Change -1 to the appropriate UserAuthorizationKey
 		@TableStatus = N'''Row Count after loading the star schema'''
 	--
-   EXEC [Project2].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 3;  -- Change -1 to the appropriate UserAuthorizationKey
+   EXEC [Project2].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
     --
 
 	DECLARE @WorkFlowStepTableRowCount INT;
