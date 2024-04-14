@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Rahib
+-- Author:		Areefin
 -- Create date: 4/13/24
 -- Description:	Populating the Marital Status Table
 -- =============================================

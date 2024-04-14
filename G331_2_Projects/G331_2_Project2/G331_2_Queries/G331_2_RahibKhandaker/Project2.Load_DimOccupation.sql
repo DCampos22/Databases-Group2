@@ -4,7 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- =============================================
--- Author:		Esteban
+-- Author:		Rahib
 -- Create date: 4/13/24
 -- Description:	Populating the Occupation Table
 -- =============================================

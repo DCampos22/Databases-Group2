@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Areefin
+-- Author:		Evnul
 -- Create date: 4/13/24
 -- Description:	Delete all data from Star Schema
 -- =============================================

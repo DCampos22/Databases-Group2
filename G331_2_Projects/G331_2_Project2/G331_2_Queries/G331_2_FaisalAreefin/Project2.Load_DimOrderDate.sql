@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Esteban
+-- Author:		Areefin
 -- Create date: 4/13/24
 -- Description:	Populating the Order Date Table
 -- =============================================

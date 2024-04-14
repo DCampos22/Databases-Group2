@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Areefin
+-- Author:		Evnul
 -- Create date: 4/13/24
 -- Description:	Loads data into [Project2].[ShowTableStatusRowCount]
 -- =============================================

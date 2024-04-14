@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
--- Author:		Evnul
+-- Author:		Rahib
 -- Create date: 4/13/24
 -- Description:	Populating Product Table
 -- =============================================
