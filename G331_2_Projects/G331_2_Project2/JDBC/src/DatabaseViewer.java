@@ -78,6 +78,12 @@ public class DatabaseViewer extends JFrame {
              Statement statement = connection.createStatement()) {
             boolean hasResults = statement.execute(sqlQuery);
             int resultSetCount = 0;
+            
+            // Clear previous results
+            resultPanel.removeAll();
+            resultPanel.revalidate();
+            resultPanel.repaint();
+            
             do {
                 if (hasResults) {
                     ResultSet resultSet = statement.getResultSet();
@@ -86,6 +92,7 @@ public class DatabaseViewer extends JFrame {
                 }
                 hasResults = statement.getMoreResults();
             } while (hasResults || statement.getUpdateCount() != -1);
+            
             if (resultSetCount == 0) {
                 JOptionPane.showMessageDialog(this, "The query did not return any result set.");
             }
