@@ -11,7 +11,7 @@ ALTER PROCEDURE [Project2].[LoadStarSchemaData]
 AS
 BEGIN
     SET NOCOUNT ON;
-		declare @UserAuthorizationKey int = 2;
+		declare @UserAuthorizationKey int = 6;
 	    DECLARE @StartingDateTime DATETIME2 = SYSDATETIME();
 
     --
@@ -21,33 +21,33 @@ BEGIN
 	--
 	--	Check row count before truncation
 	EXEC	[Project2].[ShowTableStatusRowCount]
-		@UserAuthorizationKey = 2,  -- Change -1 to the appropriate UserAuthorizationKey
+		@UserAuthorizationKey = 6,  -- Change -1 to the appropriate UserAuthorizationKey
 		@TableStatus = N'''Pre-truncate of tables'''
     --
     --	Always truncate the Star Schema Data
     --
-    EXEC  [Project2].[TruncateStarSchemaData] @UserAuthorizationKey = 2;
+    EXEC  [Project2].[TruncateStarSchemaData] @UserAuthorizationKey = 6;
     --
     --	Load the star schema
     --
-    EXEC  [Project2].[Load_DimProductCategory] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimProductSubcategory] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimProduct] @UserAuthorizationKey = 6;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimProductCategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimProductSubcategory] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimProduct] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_SalesManagers] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimGender] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimMaritalStatus] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimOccupation] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimOrderDate] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimGender] @UserAuthorizationKey = 2;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimMaritalStatus] @UserAuthorizationKey = 2;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimOccupation] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimOrderDate] @UserAuthorizationKey = 2;  -- Change -1 to the appropriate UserAuthorizationKey
     EXEC  [Project2].[Load_DimTerritory] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_DimCustomer] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
-    EXEC  [Project2].[Load_Data] @UserAuthorizationKey = 4;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_DimCustomer] @UserAuthorizationKey = 5;  -- Change -1 to the appropriate UserAuthorizationKey
+    EXEC  [Project2].[Load_Data] @UserAuthorizationKey = 2;  -- Change -1 to the appropriate UserAuthorizationKey
   --
     --	Recreate all of the foreign keys prior after loading the star schema
     --
  	--
 	--	Check row count before truncation
 	EXEC	[Project2].[ShowTableStatusRowCount]
-		@UserAuthorizationKey = 2,  -- Change -1 to the appropriate UserAuthorizationKey
+		@UserAuthorizationKey = 6,  -- Change -1 to the appropriate UserAuthorizationKey
 		@TableStatus = N'''Row Count after loading the star schema'''
 	--
    EXEC [Project2].[AddForeignKeysToStarSchemaData] @UserAuthorizationKey = 3;  -- Change -1 to the appropriate UserAuthorizationKey
