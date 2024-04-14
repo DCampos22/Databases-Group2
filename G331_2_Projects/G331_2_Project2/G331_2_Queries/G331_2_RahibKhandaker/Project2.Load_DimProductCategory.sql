@@ -11,9 +11,6 @@ ALTER PROCEDURE [Project2].[Load_DimProductCategory] @UserAuthorizationKey INT
 AS
 BEGIN
     SET NOCOUNT ON;
-
-	
-	set @UserAuthorizationKey = 2;
     DECLARE @DateAdded DATETIME2;
     SET @DateAdded = SYSDATETIME();
 
