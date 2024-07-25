@@ -6,5 +6,5 @@
 - <a href="https://cuny-my.sharepoint.com/:x:/g/personal/evnul_hossain70_qmail_cuny_edu/EQapoc_NaJNMr2TkWwhw08IB1ZNWk4NtFPvuUFfWUEn-vg?e=eZjMO2" rel="noopener noreferrer" target="_blank">G331_2_Gantt Project 2 planner.xlxs</a>
 - <a href="https://drive.google.com/file/d/1g6wRZ06Bov74gT-ejAvARoYwiVWhWtfW/view?usp=drive_link" rel="noopener noreferrer" target="_blank">G331_2_Project2.mp4</a>
 - <a href="https://drive.google.com/file/d/1d45NdzXvKc512j9CwNOtc0fn9dAHfaYB/view?usp=drive_link" rel="noopener noreferrer" target="_blank">G331_2_Project2_JDBC.mp4</a>
-- <a href="https://drive.google.com/file/d/1RzHs7bKtcfsAF8xTSm8AtStdJNEcCKIw/view?usp=sharing" target="_blank">G331_2 Redgate Documentation</a>
+
 
